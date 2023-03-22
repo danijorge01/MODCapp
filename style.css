@@ -1,0 +1,98 @@
+/* Apply a global font and background color */
+body {
+  font-family: "Helvetica Neue", sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Set a max-width for the entire page */
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Style the header */
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+/* Style the conversations and message form sections */
+#conversations,
+#message-form {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the message input and send button */
+#message-input {
+  width: 80%;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin-right: 10px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+}
+
+#message-input:focus {
+  outline: none;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+}
+
+/* Style the footer */
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+
+.messageother {
+  display: inline-block;
+  /* max-width: 80%; */
+  background-color: #f1f0f0;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  /* clear: both; */
+}
+
+.messageother::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.wrapmsgother {
+  text-align: left;
+}
+.wrapmsgme {
+  text-align: right;
+}
+.messageme {
+  display: inline-block;
+  /* max-width: 80%; */
+  background-color: #AAEFDF;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  /* clear: both; */
+  text-align: right;
+}
+
+.messageme::after {
+  content: "";
+  clear: both;
+  display: table;
+}
