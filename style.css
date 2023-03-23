@@ -60,8 +60,8 @@ footer {
 
 
 .messageother {
-  display: inline-block;
-  /* max-width: 80%; */
+  display: flex;
+  /* max-width: 80%;  */
   background-color: #f1f0f0;
   padding: 10px;
   margin: 10px 0;
@@ -74,21 +74,16 @@ footer {
   clear: both;
   display: table;
 }
-.wrapmsgother {
-  text-align: left;
-}
-.wrapmsgme {
-  text-align: right;
-}
+
 .messageme {
-  display: inline-block;
-  /* max-width: 80%; */
+  display: flex;
+  /* max-width: 80%;  */
   background-color: #AAEFDF;
   padding: 10px;
   margin: 10px 0;
   border-radius: 10px;
+  justify-content: right;
   /* clear: both; */
-  text-align: right;
 }
 
 .messageme::after {

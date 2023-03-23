@@ -1,4 +1,8 @@
 const WebSocket = require('ws');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+
+//const mongoose = require('moongose');
+//import mongoose from 'mongoose';
 
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -31,4 +35,20 @@ wss.on('connection', function connection(ws) {
   });
 });
 
+async function insertMessage() {
+  const uri = "mongodb+srv://modcgrupo6:modc2023@cluster0.tn70ola.mongodb.net/?retryWrites=true&w=majority";
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+  try {
+    await client.connect();
+    console.log("Database succesfully connected")
+    const db = client.db("MODC");
+    const messages = db.collection("messages");
+    const result = await messages.insertOne({text: 'Hello, world!', sender: 'Alice', timestamp: new Date()})
+    console.log("Message added to the db")
+  } finally {
+    await client.close();
+  }
+}
+
+insertMessage();
 // console.log("Server was killed")

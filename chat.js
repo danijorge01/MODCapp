@@ -38,9 +38,7 @@ function displayMessage(message, sender) {
 // Display my message in the conversation
 function displayMyMessage(message, sender) {
   console.log('ola');
-  //const messageElement1 = document.createElement('div');
   console.log(message);
-  //messageElement1.classList.add('wrapmsgme');
   const messageElement = document.createElement('div');
   messageElement.classList.add('messageme');
   messageElement.textContent = sender + ": " + message.text;
