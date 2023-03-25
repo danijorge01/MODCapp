@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WhatsApp Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      background-color: #128C7E;
+      color: #FFF;
+      width: 240px;
+      padding: 20px;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+
+    .sidebar a {
+      color: #FFF;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
+
+    .main-content {
+      background-color: #F4F4F4;
+      width: calc(100% - 240px);
+      padding: 20px;
+    }
+
+    .main-content h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .chat-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 20px;
+    }
+
+    .chat-card {
+      background-color: #FFF;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+      transition: all 0.3s ease;
+    }
+
+    .chat-card:hover {
+      box-shadow: 0 6px 12px rgba(0,0,0,0.16);
+    }
+
+    .chat-card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    .chat-card p {
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 10px;
+    }
+
+    .chat-card small {
+      font-size: 0.7rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h1>WhatsApp</h1>
+      <ul>
+        <li><a href="#">Chats</a></li>
+        <li><a href="#">Status</a></li>
+        <li><a href="#">Calls</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </div>
+    <div class="main-content">
+      <h1>Chats</h1>
+      <div class="chat-list">
+        <div class="chat-card">
+          <h2>John Doe</h2>
+          <p>Last message received</p>
+          <small>10:30 AM</small>
+        </div>
+        <div class="chat-card">
+          <h2>Jane Smith</h2>
+          <p>Last message received</p>
+          <small>Yesterday</small>
+        </div>
+        <div class="chat-card">
+          <h2>Bob Johnson</h2>
+          <p>Last message received</p>
+          <small>3 days ago</
+          </div>
+          <div class="chat-card">
+            <h2>Alice Jones</h2>
+            <p>Last message received</p>
+            <small>5 days ago</small>
+          </div>
+          <div class="chat-card">
+            <h2>Mark Brown</h2>
+            <p>Last message received</p>
+            <small>1 week ago</small>
+          </div>
+          <div class="chat-card">
+            <h2>Lisa Green</h2>
+            <p>Last message received</p>
+            <small>2 weeks ago</small>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
