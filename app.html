@@ -29,5 +29,16 @@
       <p>&copy; My Messaging App</p>
     </footer>
     <script src="chat.js"></script>
+    <script>
+    function handleMessageFormSubmission(event) {
+      event.preventDefault();
+      const text = document.getElementById("message-input").value;
+      if (text) {
+        sendMessage(text);
+        messageInput.value = ''; // Clear the input field
+      }
+    }
+    messageForm.addEventListener('submit', handleMessageFormSubmission);
+    </script>
   </body>
 </html>

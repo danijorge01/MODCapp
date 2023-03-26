@@ -18,11 +18,12 @@ wss.on('connection', function connection(ws) {
     console.log(`Client sent message: ${message}`);
   
     // check the type of message received
-  // function checkType(message) {
-  //   const { type } = JSON.parse(message).type;
-  // }
-    
-    // if (checkType(message) == "message") {  
+    function checkType(message) {
+      const { type } = JSON.parse(message);
+      return type;
+    }
+    //console.log(checkType(message));
+    if (checkType(message) == "message") {  
     // Send the message to all other clients
       for (let client of clients) {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
@@ -34,20 +35,12 @@ wss.on('connection', function connection(ws) {
           // Register the message in the database in json format
           insertMessage(text, sender, receiver, timestamp);
         }
-      }
-  // } else {
-  //   const {type, name, email, phoneNumber, password } = JSON.parse(message);
-  //   insertUser(name, email, phoneNumber, password);
-  // }
+      }}
+    if (checkType(message) == "user") {
+      const {type, nameUser, emailUser, phoneNumber, passwordUser } = JSON.parse(message);
+      insertUser(nameUser, emailUser, phoneNumber, passwordUser);
+    }
   });
-
-  // ws.on('user', function incomingUser(user) {
-  //   console.log(`User created: ${user}`);
-  //   //Registar na base de dados
-  //   const { name, email, phoneNumber, password } = JSON.parse(user);
-  //   insertUser(name, email, phoneNumber, password);
-  // });
-  
 
   ws.on('close', function close() {
     console.log('A client has disconnected.');
@@ -55,7 +48,6 @@ wss.on('connection', function connection(ws) {
   });
 });
  
-
 async function insertMessage(message, sender, receiver, timestamp) {
 
   try {
@@ -81,19 +73,3 @@ async function insertUser(name, email, phoneNumber, password) {
     await clientDb.close();
   }
 }
-
-
-// async function insertUser(name, email, phoneNumber, password) {
-//   try {
-//     await clientDb.connect();
-//     console.log("Database succesfully connected")
-//     const messages = db.collection("users");
-//     const result = await messages.insertOne({name: name, email: email, phoneNumber: phoneNumber, password: password})
-//     console.log("User added to the db")
-//   } finally {
-//     await clientDb.close();
-//   }
-// }
-
-//insertMessage();
-// console.log("Server was killed")

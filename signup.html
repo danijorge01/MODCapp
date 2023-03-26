@@ -14,18 +14,18 @@
       <div id="user-form">
         <form>
           <label for="name">Name:</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="nameUser" name="name" required>
 
           <label for="email">Email:</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="emailUser" name="email" required>
 
           <label for="phone-number">Phone number:</label>
           <input type="tel" id="phone-number" name="phone-number" required>
 
           <label for="password">Password:</label>
-          <input type="password" id="password" name="password" required>
+          <input type="password" id="passwordUser" name="password" required>
 
-          <button type="submit">Sign up</button>
+          <button type="submit" onclick="handleUserFormSubmission()">Sign up</button>
         </form>
       </div>
         <p>Already have an account? <a href="login.html">Login</a></p>
@@ -35,5 +35,24 @@
       <p>&copy; My Messaging App</p>
     </footer>
     <script src="chat.js"></script>
+    <script>
+      function handleUserFormSubmission(event) {
+        event.preventDefault();
+        const nome = document.getElementById("nameUser").value;
+        const mail = document.getElementById("emailUser").value;
+        const phone = document.getElementById("phone-number").value;
+        const pass = document.getElementById("passwordUser").value;
+        if (nome && mail && phone && pass) {
+          sendUser(nome, mail, phone, pass);
+          nameUser.value = '';
+          emailUser.value = '';
+          phoneNumber.value = '';
+          passwordUser.value = '';
+        }
+        window.location.href = "login.html";
+      }
+      userForm.addEventListener('submit', handleUserFormSubmission);
+      //window.location.href = "login.html";
+    </script>
   </body>
 </html>
