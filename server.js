@@ -14,7 +14,7 @@ wss.on('connection', function connection(ws) {
   console.log('A new client has connected.');
   clients.add(ws);  
 
-  ws.on('message', function incoming(message) {
+  ws.on('message', async function incoming(message) {
     console.log(`Client sent message: ${message}`);
   
     // check the type of message received
@@ -37,14 +37,22 @@ wss.on('connection', function connection(ws) {
         }
       }}
     if (checkType(message) == "user") {
-      const {type, nameUser, emailUser, phoneNumber, passwordUser } = JSON.parse(message);
+      const {nameUser, emailUser, phoneNumber, passwordUser } = JSON.parse(message);
       insertUser(nameUser, emailUser, phoneNumber, passwordUser);
+    }
+    if (checkType(message) == "login") {
+      const {phoneNumberInput, passwordInput } = JSON.parse(message);
+      const res = await getUser(phoneNumberInput, passwordInput);
+      res.type = "login";
+      const res2 = JSON.stringify(res);
+      ws.send(JSON.stringify(res2));
     }
   });
 
   ws.on('close', function close() {
     console.log('A client has disconnected.');
     clients.delete(ws);
+    localStorage.clear();
   });
 });
  
@@ -69,6 +77,23 @@ async function insertUser(name, email, phoneNumber, password) {
     const users = db.collection("users");
     const result = await users.insertOne({name: name, email: email, phoneNumber: phoneNumber, password: password})
     console.log("User added to the db")
+  } finally {
+    await clientDb.close();
+  }
+}
+
+async function getUser(phoneNumber, password) {
+  try {
+    await clientDb.connect();
+    console.log("Database succesfully connected")
+    const users = db.collection("users");
+    const result = await users.findOne({phoneNumber: phoneNumber, password: password});
+    if(!result) {
+      return {error: "Incorrect email or password."};
+    } else {
+      return result;
+    }
+    
   } finally {
     await clientDb.close();
   }

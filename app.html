@@ -11,8 +11,8 @@
       <h1>My Messaging App</h1>
     </header>
     <main>
-      <div id="userAcc"
-      <p>Logged in as Dani </p>
+      <div id="userAcc">
+      <p id="my-paragraph"></p>
       <img src="cat.png" width="60" height="60">
       </div>
         <div id="conversations">
@@ -38,7 +38,10 @@
         messageInput.value = ''; // Clear the input field
       }
     }
-    messageForm.addEventListener('submit', handleMessageFormSubmission);
+    const myValue = localStorage.getItem("username");
+    console.log(myValue);
+    document.getElementById("my-paragraph").textContent = "Logged in as " + myValue;
+    messageForm.addEventListener('submit', handleMessageFormSubmission)
     </script>
   </body>
 </html>
