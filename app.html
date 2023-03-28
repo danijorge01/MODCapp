@@ -38,7 +38,7 @@
         messageInput.value = ''; // Clear the input field
       }
     }
-    const myValue = localStorage.getItem("username");
+    const myValue = sessionStorage.getItem("username");
     console.log(myValue);
     document.getElementById("my-paragraph").textContent = "Logged in as " + myValue;
     messageForm.addEventListener('submit', handleMessageFormSubmission)

@@ -30,7 +30,10 @@ socket.addEventListener('message', async event => {
         alert(message.error);
       } else {
         const username = JSON.parse(message);
-        localStorage.setItem("username", JSON.stringify(username.name));
+        sessionStorage.setItem("username", username.name);
+        console.log(username);
+        // Assume that the session token is stored in a variable called "token"
+        sessionStorage.setItem('sessionToken', username.token);
         window.location.href = "app.html";
       }
     }
@@ -44,7 +47,7 @@ socket.addEventListener('message', async event => {
 
 // Send a message to the server
 function sendMessage(text) {
-  const message = {type: 'message', text, sender: localStorage.getItem("username"), receiver: "joao"};
+  const message = {type: 'message', text, sender: sessionStorage.getItem("username"), receiver: "joao"};
   socket.send(JSON.stringify(message));
   displayMyMessage(message, "me");
 }
