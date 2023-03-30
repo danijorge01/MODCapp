@@ -5,6 +5,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://modcgrupo6:modc2023@cluster0.tn70ola.mongodb.net/?retryWrites=true&w=majority";
 const clientDb = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 const db = clientDb.db("MODC");
+const bcrypt = require('bcrypt');
 
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -24,6 +25,7 @@ wss.on('connection', function connection(ws) {
       const { type } = JSON.parse(message);
       return type;
     }
+
     //console.log(checkType(message));
     if (checkType(message) == "message") {  
     // Send the message to all other clients
@@ -40,14 +42,36 @@ wss.on('connection', function connection(ws) {
       }}
     if (checkType(message) == "user") {
       const {nameUser, emailUser, phoneNumber, passwordUser } = JSON.parse(message);
-      insertUser(nameUser, emailUser, phoneNumber, passwordUser);
+      const passHash = await hashPass(passwordUser);
+      const pass = passHash[0];
+      const salt = passHash[1];
+      // const result = await users.insertOne({name: name, email: email, phoneNumber: phoneNumber, password: res[0] + "«" + res[1]})
+      insertUser(nameUser, emailUser, phoneNumber, pass + "«" + salt);
     }
     if (checkType(message) == "login") {
       const {phoneNumberInput, passwordInput } = JSON.parse(message);
-      const res = await getUser(phoneNumberInput, passwordInput);
+      const res = await getUser(phoneNumberInput);
+      const salt = res.password.split("«")[1];
+      const pass = res.password.split("«")[0];
+      const passHash = await bcrypt.hash(passwordInput, salt);
+      
+      if(phoneNumberInput != res.phoneNumber || passHash != pass) {
+        console.log("Incorrect email or password.");
+      } else {
+        console.log(res);
+      }
       res.type = "login";
       const sessionToken = generateToken(32);
+      const expiresAt = Date.now() + 600000;
       res.token = sessionToken;
+      res.expiresAt = expiresAt;
+      const res2 = JSON.stringify(res);
+      ws.send(JSON.stringify(res2));
+    }
+    if (checkType(message) == "usersInfo") {
+      const {name} = JSON.parse(message);
+      const res = await getAllUsers(name);
+      res.type = "usersInfo";
       console.log(res);
       const res2 = JSON.stringify(res);
       ws.send(JSON.stringify(res2));
@@ -57,24 +81,8 @@ wss.on('connection', function connection(ws) {
   ws.on('close', function close() {
     console.log('A client has disconnected.');
     clients.delete(ws);
-    //sessionStorage.clear();
   });
 });
- 
-// add session 
-async function addSession(userId, token) {
-  try {
-    await clientDb.connect();
-    console.log("Database succesfully connected")
-    const users = db.collection("users");
-    const filter = {_id: userId}
-    const update = {$set: { token: token }}
-    const result = await users.updateOne(filter, update);
-    console.log("User added to the db")
-  } finally {
-    await clientDb.close();
-  }
-}
 
 async function insertMessage(message, sender, receiver, timestamp) {
 
@@ -89,6 +97,7 @@ async function insertMessage(message, sender, receiver, timestamp) {
   }
 }
 
+
 // insert a user in the database
 async function insertUser(name, email, phoneNumber, password) {
   try {
@@ -102,18 +111,30 @@ async function insertUser(name, email, phoneNumber, password) {
   }
 }
 
-async function getUser(phoneNumber, password) {
+async function getUser(phoneNumber) {
   try {
     await clientDb.connect();
     console.log("Database succesfully connected")
     const users = db.collection("users");
-    const result = await users.findOne({phoneNumber: phoneNumber, password: password});
+    const result = await users.findOne({phoneNumber: phoneNumber});
     if(!result) {
       return {error: "Incorrect email or password."};
     } else {
       return result;
     }
     
+  } finally {
+    await clientDb.close();
+  }
+}
+
+async function getAllUsers(name) {
+  try {
+    await clientDb.connect();
+    console.log("Database succesfully connected")
+    const users = db.collection("users");
+    const result = await users.find({name: {$ne: name}}).toArray();
+    return result;    
   } finally {
     await clientDb.close();
   }
@@ -129,4 +150,17 @@ function generateToken(length) {
     token += characters.charAt(Math.floor(Math.random() * characters.length));
   }
   return token;
+}
+
+// When a user signs up, hash their password and store it in the database
+async function hashPass(password) {
+  // Generate a salt to add to the password before hashing
+  const salt = await bcrypt.genSalt(10);
+  // Hash the password using the salt
+  console.log(password);
+  const hash = await bcrypt.hash(password, salt);
+  const res = [];
+  res.push(hash);
+  res.push(salt);
+  return res;
 }

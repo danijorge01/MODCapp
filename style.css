@@ -1,6 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Apply a global font and background color */
 body {
-  font-family: "Helvetica Neue", sans-serif;
+  font-family: "Rubik", "Helvetica Neue", sans-serif;
   background-color: #f9f9f9;
   /* display: flex;
   flex-direction: column;
@@ -8,20 +14,91 @@ body {
   /* height: 100vh;
   margin: 0;
   padding: 20px; */
+
 }
+
+  /* Style the user account section */
+  #userAcc {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  #userAcc img {
+    margin-left: 10px;
+  }
+
+/* Navigation bar */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+  top: 0;
+  z-index: 1;
+}
+
+.nav-left h1 {
+  font-size: 2rem;
+  color: var(--accent-color);
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-right p {
+  margin-right: 10px;
+}
+
+.logout-text {
+  text-decoration: none;
+  color: var(--accent-color);
+  margin-right: 0;
+}
+
+.color-btn {
+  border: none;
+  background-color: var(--accent-color);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.color-btn:hover {
+  background-color: #0e318c;
+}
+
+.nav-right .color-btn p {
+  color: white;
+  text-decoration: none;
+  margin-right: 0;
+}
+
 
 /* Set a max-width for the entire page */
 main {
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 20px;
+  height: 95vh;
+  background-image: url("https://images.unsplash.com/photo-1678211370298-0daeced0e569");
+	background-size: cover;
+	background-position: center;
+
 }
 
 /* Style the header */
 header {
-  background-color: #333;
+  background-color: #0080ff;
   color: white;
   padding: 20px;
+  text-align: center;
 }
 
 #conversations {
@@ -30,26 +107,49 @@ header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* make squircle */
+  border-radius: 20px;
+  margin-top: 20px;
 }
 
 /* Style the conversations and message form sections */
-#conversations,
+#conversations{
+  background-color: white;
+  flex-grow: 1;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
 #message-form {
   background-color: white;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
 }
 
 #userAcc {
-  background-color: white;
-  padding: 20px;
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
+  background-color: white;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 40%;
+}
+
+#userAcc img {
+  margin-left: 10px;
+}
+
+#my-paragraph {
+  margin-left: 10px;
 }
 
 /* Style the message input and send button */
 #message-input {
+  flex-grow: 1;
   width: 80%;
   padding: 10px;
   border-radius: 5px;
@@ -63,20 +163,57 @@ header {
 }
 
 button[type="submit"] {
-  padding: 10px 20px;
+  background-color: #0080ff;
+  color: white;
+  padding: 10px;
   border-radius: 5px;
   border: none;
-  background-color: #333;
-  color: white;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
+button[type="submit"]:hover {
+  background-color: #0052cc;
+}
+
+  /* Style the logout button */
+  #logout {
+    background-color: #f44336;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    justify-content: right;
+    float: right;
+  }
+
+  button:hover {
+    background-color: #d32f2f;
+  }
 
 /* Style the footer */
 footer {
-  background-color: #333;
+  background-color: #0080ff;
   color: white;
-  text-align: center;
   padding: 10px;
+  text-align: center;
+}
+
+#user-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 18px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  margin-right: 10px;
+  margin-left: 10px;
+
+
 }
 
 
@@ -104,4 +241,11 @@ footer {
 
 .received p {
   margin: 0;
+}
+
+.text-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
 }

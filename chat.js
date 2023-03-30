@@ -32,10 +32,13 @@ socket.addEventListener('message', async event => {
         const username = JSON.parse(message);
         sessionStorage.setItem("username", username.name);
         console.log(username);
-        // Assume that the session token is stored in a variable called "token"
         sessionStorage.setItem('sessionToken', username.token);
+        sessionStorage.setItem('expiresAt', username.expiresAt);
         window.location.href = "app.html";
       }
+    } if(checkType(message) == "usersInfo") {
+      const users = JSON.parse(message);
+      console.log(users);
     }
   } catch {
     const messageText = await event.data.text();
@@ -66,6 +69,14 @@ function sendLoginInfo(phoneNumberInput, passwordInput) {
   console.log("Login info sent to server");
 }
 
+// Get all users
+function sendGetAllUsers(name) {
+  const usersReq = {type: 'usersInfo', name};
+  console.log(usersReq);
+  socket.send(JSON.stringify(usersReq));
+  console.log("Request all users sent to server");
+}
+
 // Display a message in the conversation
 function displayMessage(message, sender) {
   const chatBubble = document.createElement("div");
@@ -81,5 +92,14 @@ function displayMyMessage(message, sender) {
   // chatBubble.classList.add('messageme');
   chatBubble.textContent = sender + ": " + message.text;
   conversations.appendChild(chatBubble);
+}
+
+function logout() {
+  // Remove the session token from the browser's storage
+  sessionStorage.removeItem('username');
+  sessionStorage.removeItem('sessionToken');
+
+  // Redirect the user to the login page or homepage
+  window.location.href = 'login.html'; // Replace with the URL of your login page or homepage
 }
 

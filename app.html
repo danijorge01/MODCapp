@@ -1,35 +1,82 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Messaging App</title>
+    <title>ChattyBuddy</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="style.css">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   </head>
   <body>
-    <header>
-      <h1>My Messaging App</h1>
-    </header>
-    <main>
-      <div id="userAcc">
-      <p id="my-paragraph"></p>
-      <img src="cat.png" width="60" height="60">
+    <nav>
+      <div class="nav-left">
+        <h1>ChattyBuddy</h1>
       </div>
+      <div class="nav-right">
+        <p class="welcome_text" id = "name_nav" ></p>
+        <div id="user-icon" onclick="toggleDropdown()"></div>          
+      </div>
+    </nav>
+    <!-- <header>
+      <h1>ChattyBuddy</h1>
+    </header> -->
+    <main>
+      <div>
+        <button class="color-btn" id = "logout" onclick="logout()">Logout</button>
+      </div>
+      <!-- <div id="userAcc">
+      <p id="my-paragraph"></p> -->
+      
+      </div>
+      <!-- <ul id="people-list"> -->
+        <!-- The list of people will be generated dynamically -->
+      <!-- </ul> -->
         <div id="conversations">
           <!--Conversations will be displayed here-->
         </div>
       <div id="message-form">
-        <form>
+        <form class="text-input">
           <input type="text" id="message-input" placeholder="Type your message">
           <button type="submit">Send</button>
         </form>
       </div>
     </main>
-    <footer>
-      <p>&copy; My Messaging App</p>
-    </footer>
+    <!-- <footer>
+      <p>&copy; ChattyBuddy</p>
+    </footer> -->
     <script src="chat.js"></script>
     <script>
+
+    /*
+    function getPeopleList() {
+      const peopleList = document.getElementById('people-list');
+      // Generate the list of people dynamically
+      const users = sendGetAllUsers(sessionStorage.getItem("username"));
+      console.log(users);
+      for (const user of users) {
+        const personLink = document.createElement('a');
+        personLink.href = '#';
+        personLink.dataset.id = user._id;
+        personLink.textContent = user.name;
+        const personListItem = document.createElement('li');
+        personListItem.appendChild(personLink);
+        peopleList.appendChild(personListItem);
+      }
+    }
+    
+    function showChatBox(personId) {
+        // Display the chat box
+        const chatBox = document.getElementById('chat-box');
+        const peopleList = document.getElementById('people-list');
+        chatBox.style.display = 'block';
+        peopleList.style.display = 'none';
+        // Clear any existing messages from the chat box
+        chatBox.innerHTML = '';
+    }
+    */
+
     function handleMessageFormSubmission(event) {
       event.preventDefault();
       const text = document.getElementById("message-input").value;
@@ -38,10 +85,39 @@
         messageInput.value = ''; // Clear the input field
       }
     }
-    const myValue = sessionStorage.getItem("username");
-    console.log(myValue);
-    document.getElementById("my-paragraph").textContent = "Logged in as " + myValue;
+
+    function checkTokenExpiration(tokenAge) {
+      // Get the current time in milliseconds
+      const currentTime = Date.now();
+
+      // Check if the token has expired
+      if (currentTime > tokenAge) {
+        // Token is expired
+        console.log("Token is expired");
+      } else {
+        // Token is still valid
+        console.log("Token is still valid");
+      }
+    }
+    const username = sessionStorage.getItem("username");
+    const tokenAge = sessionStorage.getItem("expiresAt");
+
+    // check if user is logged in
+    if(username == null) {
+      window.location.href = "login.html";
+    }
+
+    // check every 30 seconds if the token expired
+    setInterval(function() {
+      checkTokenExpiration(tokenAge);
+    }, 30000);
+
+    //document.getElementById("my-paragraph").textContent = "Logged in as " + username;
+    document.getElementById("name_nav").textContent = 'Welcome, ' + username + '!' ;
+    document.getElementById("user-icon").textContent =  username.substring(0, 1);
     messageForm.addEventListener('submit', handleMessageFormSubmission)
+
+    // getPeopleList();
     </script>
   </body>
 </html>
