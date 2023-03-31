@@ -51,22 +51,30 @@ wss.on('connection', function connection(ws) {
     if (checkType(message) == "login") {
       const {phoneNumberInput, passwordInput } = JSON.parse(message);
       const res = await getUser(phoneNumberInput);
-      const salt = res.password.split("«")[1];
-      const pass = res.password.split("«")[0];
-      const passHash = await bcrypt.hash(passwordInput, salt);
-      
-      if(phoneNumberInput != res.phoneNumber || passHash != pass) {
-        console.log("Incorrect email or password.");
+      if (res.error) {
+        res.type = "login";
+        const res2 = JSON.stringify(res);
+        ws.send(JSON.stringify(res2));
       } else {
-        console.log(res);
+        const salt = res.password.split("«")[1];
+        const pass = res.password.split("«")[0];
+        const passHash = await bcrypt.hash(passwordInput, salt);
+        
+        if(passHash != pass) {
+          res.type = "login";
+          res.error = "Incorrect email or password.";
+          const res2 = JSON.stringify(res);
+        ws.send(JSON.stringify(res2));
+        } else {
+          res.type = "login";
+          const sessionToken = generateToken(32);
+          const expiresAt = Date.now() + 600000;
+          res.token = sessionToken;
+          res.expiresAt = expiresAt;
+          const res2 = JSON.stringify(res);
+          ws.send(JSON.stringify(res2));
+        }
       }
-      res.type = "login";
-      const sessionToken = generateToken(32);
-      const expiresAt = Date.now() + 600000;
-      res.token = sessionToken;
-      res.expiresAt = expiresAt;
-      const res2 = JSON.stringify(res);
-      ws.send(JSON.stringify(res2));
     }
     if (checkType(message) == "usersInfo") {
       const {name} = JSON.parse(message);

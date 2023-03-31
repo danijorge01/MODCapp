@@ -26,10 +26,10 @@ socket.addEventListener('message', async event => {
       return type;
     }
     if(checkType(message) == "login") {
-      if(message.error) {
-        alert(message.error);
+      const username = JSON.parse(message);
+      if(username.error) {
+        alert(username.error);
       } else {
-        const username = JSON.parse(message);
         sessionStorage.setItem("username", username.name);
         console.log(username);
         sessionStorage.setItem('sessionToken', username.token);
